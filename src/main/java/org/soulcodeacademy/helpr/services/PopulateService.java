@@ -87,7 +87,7 @@ public class PopulateService {
         Chamado ch7 = new Chamado(null, "Trocar roteadores", "Configurar roteadores");
         ch7.setCliente(cl4);
         ch7.setFuncionario(f9);
-        ch7.setStatus(StatusChamado.CONCLUIDO);
+        ch7.setStatus(StatusChamado.ARQUIVADO);
 
 
         // vamos persistir as entidades = salvar no banco

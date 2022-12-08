@@ -23,7 +23,6 @@ public class FuturoCandidato {
     @Enumerated(EnumType.STRING)
     private SetorFuturoCandidato setor;
 
-
     public FuturoCandidato(){}
 
     // Construtor

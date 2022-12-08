@@ -1,19 +1,15 @@
 package org.soulcodeacademy.helpr.services;
 
-import org.soulcodeacademy.helpr.domain.Cargo;
-import org.soulcodeacademy.helpr.domain.Chamado;
-import org.soulcodeacademy.helpr.domain.Cliente;
-import org.soulcodeacademy.helpr.domain.Funcionario;
+import org.soulcodeacademy.helpr.domain.*;
 import org.soulcodeacademy.helpr.domain.enums.Perfil;
+import org.soulcodeacademy.helpr.domain.enums.SetorFuturoCandidato;
 import org.soulcodeacademy.helpr.domain.enums.StatusChamado;
-import org.soulcodeacademy.helpr.repositories.CargoRepository;
-import org.soulcodeacademy.helpr.repositories.ChamadoRepository;
-import org.soulcodeacademy.helpr.repositories.ClienteRepository;
-import org.soulcodeacademy.helpr.repositories.FuncionarioRepository;
+import org.soulcodeacademy.helpr.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.ClientInfoStatus;
 import java.util.List;
 
 // Torna o objeto de PopulateService disponível para toda a aplicação (global)
@@ -33,6 +29,9 @@ public class PopulateService {
 
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired
+    private FuturoCandidatoRepository futurocandidatoRepository;
 
     public void populate() {
         // Integer idCargo, String nome, String descricao, Double salario
@@ -56,6 +55,8 @@ public class PopulateService {
         Funcionario f7 = new Funcionario(null, "Tarcisio Meira", "tarmeira@gmail.com", "96785412302", encoder.encode("12345"), null, c3);
         Funcionario f8 = new Funcionario(null, "Regina Duarte", "regina.duarte@gmail.com", "01269874521", encoder.encode("12345"), null, c3);
         Funcionario f9 = new Funcionario(null, "Gloria Pires", "gloriapiresa@gmail.com", "02369785412", encoder.encode("12345"), null, c3);
+
+        FuturoCandidato futuroCandidato1= new FuturoCandidato(null,"Aline rafaela","aline@123.com","amo o que faço", SetorFuturoCandidato.MARKETING );
 
         Cliente cl1 = new Cliente(null, "José Almir", "jose.almir@gmail.com", "12659185115", encoder.encode("batata"), "9999999999");
         Cliente cl2 = new Cliente(null, "Pedro João", "pedro@gmail.com", "37734168302", encoder.encode("batata"), "9999999997");
@@ -89,13 +90,14 @@ public class PopulateService {
         ch7.setFuncionario(f9);
         ch7.setStatus(StatusChamado.ARQUIVADO);
 
-
         // vamos persistir as entidades = salvar no banco
         this.cargoRepository.saveAll(List.of(c1, c2, c3));
         this.funcionarioRepository.saveAll(List.of(f1, f2, f3, f4, f5, f6, f7, f8, f9));
         this.clienteRepository.saveAll(List.of(cl1, cl2, cl3, cl4));
         this.chamadoRepository.saveAll(List.of(ch1, ch2, ch3, ch4, ch5, ch6, ch7));
+        this.futurocandidatoRepository.saveAll(List.of(futuroCandidato1));
     }
+
 }
 
 // O objetivo desta classe é inserir no banco, dados fictícios (de teste)

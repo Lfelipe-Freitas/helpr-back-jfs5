@@ -23,7 +23,7 @@ public class FuturoCandidato {
     @Enumerated(EnumType.STRING)
     private SetorFuturoCandidato setor;
 
-    public FuturoCandidato() { }
+    public FuturoCandidato(Object o, Integer idFuturoCandidato, String nome, String email, String descricaoHabilidade, String setorFuturoCandidato) { }
 
     // Construtor
     public FuturoCandidato(Integer idFuturoCandidato, String nomeCompleto, String email, String descricaoHabilidades, SetorFuturoCandidato setor) {

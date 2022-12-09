@@ -65,3 +65,5 @@ public class CargoController {
         this.cargoService.deletar(idCargo);
     }
 }
+
+

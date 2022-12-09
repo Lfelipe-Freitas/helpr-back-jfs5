@@ -31,6 +31,13 @@ public class CargoService {
                 .orElseThrow(() -> new RecursoNaoEncontradoError("Cargo não encontrado."));
 
     }
+
+    //listar cargo pelo nome
+    public List<Cargo> nomeCargo(String valor) {
+        return this.cargoRepository.findByNome(valor);
+    }
+
+
     // Salvar
     public Cargo salvar(CargoDTO dto) {
         // INSERT INTO cargo

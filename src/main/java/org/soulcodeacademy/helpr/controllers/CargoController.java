@@ -42,6 +42,11 @@ public class CargoController {
         return this.cargoService.getCargo(idCargo);
     }
 
+    @GetMapping("cargo/busca")
+    public List<Cargo> nomeCargo(@RequestParam String valor){
+        return cargoService.nomeCargo(valor);
+    }
+
     // Podemos usar o mesmo endpoint para verbos diferentes
     @PreAuthorize("hasRole('ROLE_ADMIN')") // Apenas os admins podem acessar este endpoint
     @PostMapping("/cargos") // REQUISIÇÃO TIPO POST para /cargos

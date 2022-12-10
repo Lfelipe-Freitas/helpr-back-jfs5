@@ -69,14 +69,13 @@ public class ChamadoService {
                 }
                 case CONCLUIDO -> {
                     chamadoAtual.setStatus(StatusChamado.CONCLUIDO);
-                    chamadoAtual.setFuncionario(funcionario);
-                    chamadoAtual.setDataFechamento(LocalDate.now());
                 }
             }
         }
 
         return this.chamadoRepository.save(chamadoAtual);
     }
+
 
     public List<Chamado> listarPorStatus(StatusChamado status) {
         return this.chamadoRepository.findByStatus(status);
@@ -96,3 +95,6 @@ public class ChamadoService {
         return this.chamadoRepository.buscarEntreDatas(data1, data2);
     }
 }
+
+
+

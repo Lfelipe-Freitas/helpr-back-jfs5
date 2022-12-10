@@ -69,6 +69,11 @@ public class ChamadoService {
                 }
                 case CONCLUIDO -> {
                     chamadoAtual.setStatus(StatusChamado.CONCLUIDO);
+                    chamadoAtual.setFuncionario(funcionario);
+                    chamadoAtual.setDataFechamento(LocalDate.now());
+                }
+                case ARQUIVADO -> {
+                    chamadoAtual.setStatus(StatusChamado.ARQUIVADO);
                 }
             }
         }

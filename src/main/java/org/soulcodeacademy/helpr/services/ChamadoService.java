@@ -72,6 +72,11 @@ public class ChamadoService {
                     chamadoAtual.setFuncionario(funcionario);
                     chamadoAtual.setDataFechamento(LocalDate.now());
                 }
+                case ARQUIVADO -> {
+                    chamadoAtual.setStatus(StatusChamado.ARQUIVADO);
+                    chamadoAtual.setFuncionario(null);
+                    chamadoAtual.setDataFechamento(null);
+                }
             }
         }
 
@@ -96,3 +101,7 @@ public class ChamadoService {
         return this.chamadoRepository.buscarEntreDatas(data1, data2);
     }
 }
+
+
+
+

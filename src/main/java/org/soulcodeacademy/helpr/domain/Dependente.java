@@ -17,6 +17,9 @@ public class Dependente {
     @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
+    @Column(nullable = false, length = 10)
+    private String dataNasc;
+
     @Column(nullable = false, length = 300)
     private String escolaridade;
 
@@ -31,6 +34,7 @@ public class Dependente {
         this.idDependente = idDependente;
         this.nome = nome;
         this.cpf = cpf;
+        this.dataNasc = dataNasc;
         this.escolaridade = escolaridade;
         this.idResponsavel = responsavel;
     }
@@ -58,6 +62,10 @@ public class Dependente {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
+    public String getDataNasc() {return dataNasc;}
+
+    public void setDataNasc(String dataNasc) {this.dataNasc = dataNasc;}
 
     public String getEscolaridade() {
         return escolaridade;

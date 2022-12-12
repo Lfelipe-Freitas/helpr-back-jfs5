@@ -1,6 +1,8 @@
 package org.soulcodeacademy.helpr.domain;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 //N dependentes pode estar relacionado a 1 funcionario
 //Relação N:1
@@ -18,25 +20,25 @@ public class Dependente {
     private String cpf;
 
     @Column(nullable = false, length = 10)
-    private String dataNasc;
+    private LocalDate dataNasc;
 
     @Column(nullable = false, length = 300)
     private String escolaridade;
 
     @ManyToOne // N:1
     @JoinColumn (name = "id_responsavel", nullable = false)
-    private Funcionario idResponsavel;
+    private Integer idResponsavel;
 
     public Dependente() {
     }
 
-    public Dependente(Integer idDependente, String nome, String cpf, String escolaridade, Funcionario responsavel) {
+    public Dependente(Integer idDependente, String nome, String cpf, LocalDate dataNasc, String escolaridade, Integer idResponsavel) {
         this.idDependente = idDependente;
         this.nome = nome;
         this.cpf = cpf;
         this.dataNasc = dataNasc;
         this.escolaridade = escolaridade;
-        this.idResponsavel = responsavel;
+        this.idResponsavel = idResponsavel;
     }
 
     public Integer getIdDependente() {
@@ -63,9 +65,13 @@ public class Dependente {
         this.cpf = cpf;
     }
 
-    public String getDataNasc() {return dataNasc;}
+    public LocalDate getDataNasc() {
+        return dataNasc;
+    }
 
-    public void setDataNasc(String dataNasc) {this.dataNasc = dataNasc;}
+    public void setDataNasc(LocalDate dataNasc) {
+        this.dataNasc = dataNasc;
+    }
 
     public String getEscolaridade() {
         return escolaridade;
@@ -75,11 +81,11 @@ public class Dependente {
         this.escolaridade = escolaridade;
     }
 
-    public Funcionario getResponsavel() {
+    public Integer getIdResponsavel() {
         return idResponsavel;
     }
 
-    public void setResponsavel(Funcionario responsavel) {
-        this.idResponsavel = responsavel;
+    public void setIdResponsavel(Integer idResponsavel) {
+        this.idResponsavel = idResponsavel;
     }
 }

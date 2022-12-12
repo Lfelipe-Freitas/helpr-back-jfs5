@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Date;
 
 public class DependenteDTO {
 
@@ -15,7 +17,7 @@ public class DependenteDTO {
     private String cpf;
 
     @NotNull(message = "A data de nascimento é obrigatória ")
-    private String dataNasc;
+    private LocalDate dataNasc;
 
     @NotBlank(message = "A escolaridade é obrigatória ")
     private String escolaridade;
@@ -39,11 +41,11 @@ public class DependenteDTO {
         this.cpf = cpf;
     }
 
-    public String getDataNasc() {
+    public LocalDate getDataNasc() {
         return dataNasc;
     }
 
-    public void setDataNasc(String dataNasc) {
+    public void setDataNasc(LocalDate dataNasc) {
         this.dataNasc = dataNasc;
     }
 

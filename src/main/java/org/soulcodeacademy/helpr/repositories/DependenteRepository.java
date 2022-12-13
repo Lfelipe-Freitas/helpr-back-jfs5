@@ -15,9 +15,11 @@ public interface DependenteRepository extends JpaRepository<Dependente, Integer>
 
     List<Dependente> findByCpf(String cpf); // Filtrar por cpf
 
+    List<Dependente> findByListarPorData(String data1, String data2); // Filtrar por data
+
     List<Dependente> findByEscolaridade(String escolaridade); //Filtrar por escolaridade
 
-    List<Dependente> findByIdResponsavel(Funcionario responsavel);// Filtrar por responsável
+    List<Dependente> findByIdResponsavel(Integer idResponsavel);// Filtrar por responsável
 
 
 }

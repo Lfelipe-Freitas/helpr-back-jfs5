@@ -1,5 +1,6 @@
 package org.soulcodeacademy.helpr.services;
 
+import org.soulcodeacademy.helpr.domain.Cargo;
 import org.soulcodeacademy.helpr.domain.Dependente;
 import org.soulcodeacademy.helpr.domain.Funcionario;
 import org.soulcodeacademy.helpr.domain.dto.DependenteDTO;
@@ -53,18 +54,23 @@ public class DependenteService {
     //Salvar dependente (deve ser menor de idade, checar isso); <---
 
     public Dependente salvar(DependenteDTO dto) {
+        Funcionario funcionario = this.funcionarioService.getFuncionario(dto.getIdResponsavel());
+        Dependente dependente = new Dependente(null, dto.getNome(), dto.getCpf(), dto.getDataNasc(), dto.getEscolaridade(), dto.getIdResponsavel());
 
         Integer idade = (LocalDate.now()
                 .minusDays(dto.getDataNasc().getDayOfMonth())
                 .minusMonths(dto.getDataNasc().getMonthValue())
                 .minusYears(dto.getDataNasc().getYear())).getYear();
 
-        if (idade > 18) {
+        if (idade < 18) {
+
             throw new ParametrosInsuficientesError("O dependente não pode ser cadastrado!");
         } else {
-            throw new ParametrosInsuficientesError("O dependente foi cadastrado com sucesso!");
+            return this.dependenteRepository.save(dependente);
 
         }
+
+
 
 
     }

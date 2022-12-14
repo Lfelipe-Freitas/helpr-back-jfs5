@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.ClientInfoStatus;
+import java.time.LocalDate;
 import java.util.List;
 
 // Torna o objeto de PopulateService disponível para toda a aplicação (global)
@@ -32,6 +33,9 @@ public class PopulateService {
 
     @Autowired
     private FuturoCandidatoRepository futurocandidatoRepository;
+
+    @Autowired
+    private DependenteRepository dependenteRepository;
 
     public void populate() {
         // Integer idCargo, String nome, String descricao, Double salario
@@ -90,12 +94,18 @@ public class PopulateService {
         ch7.setFuncionario(f9);
         ch7.setStatus(StatusChamado.ARQUIVADO);
 
+
+        Dependente d1 = new Dependente("Maria Helena", "00000000000", LocalDate.parse("2017-02-16") , "fundamental", 1);
+
+
         // vamos persistir as entidades = salvar no banco
         this.cargoRepository.saveAll(List.of(c1, c2, c3));
         this.funcionarioRepository.saveAll(List.of(f1, f2, f3, f4, f5, f6, f7, f8, f9));
         this.clienteRepository.saveAll(List.of(cl1, cl2, cl3, cl4));
         this.chamadoRepository.saveAll(List.of(ch1, ch2, ch3, ch4, ch5, ch6, ch7));
         this.futurocandidatoRepository.saveAll(List.of(futuroCandidato1));
+        this.dependenteRepository.save(d1);
+
     }
 
 }

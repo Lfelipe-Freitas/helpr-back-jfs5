@@ -5,9 +5,10 @@ import org.hibernate.validator.constraints.br.CPF;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
+
 
 public class DependenteDTO {
+
 
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
@@ -17,13 +18,15 @@ public class DependenteDTO {
     private String cpf;
 
     @NotNull(message = "A data de nascimento é obrigatória ")
-    private LocalDate dataNasc;
+    private String dataNasc;
 
     @NotBlank(message = "A escolaridade é obrigatória ")
     private String escolaridade;
 
     @NotNull(message = "O id do responsável é obrigatória")
     private Integer idResponsavel;
+
+    public LocalDate getDataNasc;
 
     public String getNome() {
         return nome;
@@ -41,11 +44,11 @@ public class DependenteDTO {
         this.cpf = cpf;
     }
 
-    public LocalDate getDataNasc() {
+    public CharSequence getDataNasc() {
         return dataNasc;
     }
 
-    public void setDataNasc(LocalDate dataNasc) {
+    public void setDataNasc(String dataNasc) {
         this.dataNasc = dataNasc;
     }
 
@@ -65,4 +68,5 @@ public class DependenteDTO {
         this.idResponsavel = idResponsavel;
     }
 }
+
 

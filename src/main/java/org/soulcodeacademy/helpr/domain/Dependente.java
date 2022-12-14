@@ -25,9 +25,11 @@ public class Dependente {
     @Column(nullable = false, length = 300)
     private String escolaridade;
 
+
+
     @ManyToOne // N:1
-    @JoinColumn (name = "id_responsavel", nullable = false)
-    private Integer idResponsavel;
+    @JoinColumn (name = "id_responsavel")
+    private Funcionario funcionario;
 
     public Dependente() {
     }
@@ -38,7 +40,17 @@ public class Dependente {
         this.cpf = cpf;
         this.dataNasc = dataNasc;
         this.escolaridade = escolaridade;
-        this.idResponsavel = idResponsavel;
+        this.funcionario = new Funcionario();
+        this.funcionario.setId(idResponsavel);
+    }
+
+    public Dependente(String nome, String cpf, LocalDate parse, String escolaridade, Integer idResponsavel) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNasc = parse;
+        this.escolaridade = escolaridade;
+        this.funcionario = new Funcionario();
+        this.funcionario.setId(idResponsavel);
     }
 
     public Integer getIdDependente() {
@@ -81,11 +93,14 @@ public class Dependente {
         this.escolaridade = escolaridade;
     }
 
-    public Integer getIdResponsavel() {
-        return idResponsavel;
+    public Funcionario getFuncionario() {
+        return funcionario;
     }
 
-    public void setIdResponsavel(Integer idResponsavel) {
-        this.idResponsavel = idResponsavel;
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+
     }
+
+
 }

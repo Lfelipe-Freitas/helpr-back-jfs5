@@ -5,21 +5,27 @@ import org.soulcodeacademy.helpr.domain.Dependente;
 import org.soulcodeacademy.helpr.domain.Funcionario;
 import org.soulcodeacademy.helpr.domain.dto.DependenteDTO;
 import org.soulcodeacademy.helpr.repositories.DependenteRepository;
+import org.soulcodeacademy.helpr.repositories.FuncionarioRepository;
 import org.soulcodeacademy.helpr.services.errors.ParametrosInsuficientesError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DependenteService {
     @Autowired
-    DependenteRepository dependenteRepository;
+    private DependenteRepository dependenteRepository;
 
     @Autowired
-    FuncionarioService funcionarioService;
+    private FuncionarioService funcionarioService;
+
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
 
 
 
@@ -29,7 +35,7 @@ public class DependenteService {
         return this.dependenteRepository.findAll();
     }
 
-    //Listar um dependente pelo id;
+    //Listar id;
 
     public Dependente getDependente(Integer idDependente){
         Optional<Dependente> dependente = this.dependenteRepository.findById(idDependente);
@@ -42,65 +48,79 @@ public class DependenteService {
 
     }
     //Filtrar por cpf;
-    public List<Dependente> listarPorCpf(String valor) {
-        return this.dependenteRepository.findByCpf(valor);
+    public Dependente getDependenteByCPF(String cpf){
+        Dependente dependente = this.dependenteRepository.findByCpf(cpf);
+
+        return dependente;
     }
 
+
+
     //Filtrar por faixa de datas;
-    public List<Dependente> listarDependenteData(String data1, String data2) {
-        return this.dependenteRepository.findByListarPorData(data1, data2);
+    public List<Dependente> getByFaixaData(LocalDate data1, LocalDate data2){
+
+        return dependenteRepository.buscarEntreDatas(data1, data2);
     }
+
+
 
     //Salvar dependente (deve ser menor de idade, checar isso); <---
 
-    public Dependente salvar(DependenteDTO dto) {
+    public Dependente salvar(DependenteDTO dto){
         Funcionario funcionario = this.funcionarioService.getFuncionario(dto.getIdResponsavel());
-        Dependente dependente = new Dependente(null, dto.getNome(), dto.getCpf(), dto.getDataNasc(), dto.getEscolaridade(), dto.getIdResponsavel());
 
-        Integer idade = (LocalDate.now()
-                .minusDays(dto.getDataNasc().getDayOfMonth())
-                .minusMonths(dto.getDataNasc().getMonthValue())
-                .minusYears(dto.getDataNasc().getYear())).getYear();
+        Dependente dependenteNovo = new Dependente( dto.getNome(), dto.getCpf(), LocalDate.parse(dto.getDataNasc()),dto.getEscolaridade(),dto.getIdResponsavel());
 
-        if (idade < 18) {
+        Period period = Period.between(LocalDate.parse(dto.getDataNasc()), LocalDate.now());
 
-            throw new ParametrosInsuficientesError("O dependente não pode ser cadastrado!");
-        } else {
-            return this.dependenteRepository.save(dependente);
-
+        if(period.getYears() >= 18){
+            throw new RuntimeException("Não é permitido registrar dependentes maiores de 18 anos.");
         }
 
+        if(!funcionarioRepository.exists(Example.of(dependenteNovo.getFuncionario()))){
+            funcionarioRepository.save(dependenteNovo.getFuncionario());
+        }
 
-
-
+        return this.dependenteRepository.save(dependenteNovo);
     }
+
+
+
+
 
     //Atualizar dependente (não permitir mudar de responsável); <---
 
     public Dependente atualizar(Integer idDependente, DependenteDTO dto) {
-        Dependente dependenteAtual = this.getDependente(idDependente);
 
-        dependenteAtual.setNome(dto.getNome());
-        dependenteAtual.setCpf(dto.getCpf());
-        dependenteAtual.setDataNasc(dto.getDataNasc());
-        dependenteAtual.setEscolaridade(dto.getEscolaridade());
+        Dependente DependenteAtual = new Dependente();
 
-        Dependente atualizado = this.dependenteRepository.save(dependenteAtual);
-        return atualizado;
-    };
+        DependenteAtual.setIdDependente(idDependente);
+        DependenteAtual.setNome(dto.getNome());
+        DependenteAtual.setCpf(dto.getCpf());
+        DependenteAtual.setDataNasc(dto.getDataNasc);
+        DependenteAtual.setEscolaridade("escolaridade");
+        DependenteAtual.setFuncionario(new Funcionario());
+        DependenteAtual.getFuncionario().setId(dto.getIdResponsavel());
+
+        Dependente dadosAntigos = dependenteRepository.findById(idDependente).get();
+
+        if (dadosAntigos == null || dadosAntigos.getFuncionario().getId() != DependenteAtual.getFuncionario().getId()) {
+            throw new RuntimeException("Não é permitido alterar o responsavel do dependente.");
+        }
+
+        return this.dependenteRepository.save(DependenteAtual);
+    }
 
     //Deletar dependente;
 
     public void deletar(Integer idDependente) {
-        Dependente dependente = this.getDependente(idDependente);
-        this.dependenteRepository.delete(dependente);
+        this.dependenteRepository.deleteById(idDependente);
     }
 
 
     //Listar os dependentes de um funcionário por id.
-    public List<Dependente> listarPorFuncionario(Integer idFuncionario) {
-        Funcionario idResponsavel= this.funcionarioService.getFuncionario(idFuncionario);
-        return this.dependenteRepository.findByIdResponsavel(idResponsavel.getId());
+    public List<Dependente> getDependenteByFuncionarioId(Integer idFuncionario){
+        return this.dependenteRepository.findByFuncionarioId(idFuncionario);
     }
 
 }
